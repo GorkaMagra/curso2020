@@ -1,14 +1,67 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
+    <record id="ticket_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.view.form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <form string="Ticket">
+                <sheet>
+                    <group name="main">
+                        <group name="name">
+                            <field name="name"/>
+                        </group>
+                        <group name="date_deadline">
+                            <field name="date_deadline"/>
+                            <field name="responsable_id"/>
+                            <field name="ticket_qty"/>
+                            <button string="Assign to me" name="set_responsable" type="object"/>
+                            <button string="Assign to me (Wizard)" type="action"
+                                    name="%(action_helpdesk_set_responsable)d"/>
+                        </group>
+                    </group>
+                    <group name="description" string="Description">
+                        <field name="stage_id"/>
+                        <field name="description" nolabel="1"/>
+                    </group>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="ticket_view_tree" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.view.tree</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="description" optional="hide"/>
+                <field name="date_deadline" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="helpdesk_ticket_action" model="ir.actions.act_window">
-            <field name="name">Tickets</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">helpdesk.ticket</field>
-            <field name="view_mode">tree,form</field>
+        <field name="name">Tickets</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                CLick to create new Ticket
+            </p>
+        </field>
+
 <!--        View type not necessary on 13.V-->
     </record>
 
-    <menuitem id="menu_hd_ticket" name="Tickets" action="helpdesk_ticket_action" sequence="100"/>
+    <menuitem id="menu_hd_ticket" parent="helpdesk_ticket_main_menu" action="helpdesk_ticket_action"
+              sequence="100"/>
 
 </odoo>
